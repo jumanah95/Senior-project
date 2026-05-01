@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Powered Conversational Assessment Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --beige: #F5F0E8;
+    --beige-dark: #EAE3D2;
+    --beige-mid: #D9CEBB;
+    --charcoal: #2C2C2A;
+    --charcoal-mid: #444441;
+    --charcoal-light: #6B6B68;
+    --blue-light: #A8C8E8;
+    --blue-mid: #7BAED4;
+    --blue-pale: #D6E8F5;
+    --blue-deep: #4A88BE;
+    --accent-line: #7BAED4;
+    --white: #FDFAF5;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #1a1a18;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 40px 20px;
+  }
+
+  .slide {
+    width: 960px;
+    min-height: 540px;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ─── SLIDE 1: TITLE ─── */
+  .s1 {
+    background: var(--charcoal);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 540px;
+  }
+  .s1-left {
+    background: var(--beige);
+    padding: 60px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .s1-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+  }
+  .s1-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--charcoal);
+    margin: 30px 0 20px;
+  }
+  .s1-title span {
+    color: var(--blue-deep);
+    font-style: italic;
+  }
+  .s1-info {
+    font-size: 12px;
+    color: var(--charcoal-light);
+    line-height: 2;
+    border-top: 0.5px solid var(--beige-mid);
+    padding-top: 20px;
+  }
+  .s1-right {
+    background: var(--charcoal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 60px 40px;
+  }
+  .s1-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 1px solid rgba(168,200,232,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .s1-circle::before {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 1px solid rgba(168,200,232,0.15);
+  }
+  .s1-circle-inner {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(168,200,232,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--blue-light);
+    font-weight: 300;
+  }
+  .s1-names {
+    text-align: center;
+    color: rgba(245,240,232,0.7);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.9;
+  }
+  .s1-names strong {
+    color: var(--beige);
+    font-weight: 500;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  /* ─── GENERIC SLIDE ─── */
+  .slide-inner {
+    width: 100%;
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-header {
+    padding: 36px 60px 24px;
+    border-bottom: 0.5px solid var(--beige-mid);
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .slide-num {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--blue-mid);
+    text-transform: uppercase;
+    padding-bottom: 3px;
+  }
+  .slide-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--charcoal);
+    line-height: 1.1;
+  }
+  .slide-body {
+    padding: 36px 60px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ─── BEIGE SLIDES ─── */
+  .bg-beige { background: var(--beige); }
+  .bg-white { background: var(--white); }
+  .bg-dark { background: var(--charcoal); }
+  .bg-blue { background: var(--blue-pale); }
+
+  /* ─── BULLET ITEMS ─── */
+  .items { display: flex; flex-direction: column; gap: 14px; }
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: 14px;
+    color: var(--charcoal-mid);
+    line-height: 1.6;
+  }
+  .item-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  /* ─── 2-COL GRID ─── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--white);
+    border: 0.5px solid var(--beige-mid);
+    border-radius: 10px;
+    padding: 22px 24px;
+  }
+  .card-dark {
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 22px 24px;
+  }
+  .card-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue-mid);
+    margin-bottom: 10px;
+  }
+  .card-label-dark {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 10px;
+  }
+  .card-title-dark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--beige);
+    margin-bottom: 10px;
+  }
+  .card-text {
+    font-size: 13px;
+    color: var(--charcoal-light);
+    line-height: 1.7;
+  }
+  .card-text-dark {
+    font-size: 13px;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.7;
+  }
+
+  /* ─── SECTION DIVIDER SLIDES ─── */
+  .divider-slide {
+    background: var(--charcoal);
+    min-height: 540px;
+    display: flex;
+    align-items: center;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .divider-slide::before {
+    content: '';
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(168,200,232,0.12);
+  }
+  .divider-slide::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 1px solid rgba(168,200,232,0.08);
+  }
+  .divider-inner { z-index: 1; }
+  .divider-sup {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 20px;
+  }
+  .divider-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 300;
+    color: var(--beige);
+    line-height: 1.1;
+    max-width: 600px;
+  }
+  .divider-title em {
+    color: var(--blue-light);
+    font-style: italic;
+  }
+
+  /* ─── ARCH DIAGRAM ─── */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .arch-card {
+    background: var(--white);
+    border: 0.5px solid var(--beige-mid);
+    border-radius: 10px;
+    padding: 18px 20px;
+    border-left: 3px solid var(--blue-mid);
+  }
+  .arch-icon {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .arch-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+  }
+  .arch-desc {
+    font-size: 11.5px;
+    color: var(--charcoal-light);
+    line-height: 1.5;
+  }
+
+  /* ─── TOOL TABLE ─── */
+  .tool-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 1fr;
+    gap: 0;
+    border-bottom: 0.5px solid var(--beige-mid);
+    padding: 13px 0;
+    align-items: start;
+  }
+  .tool-row:last-child { border-bottom: none; }
+  .tool-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+  }
+  .tool-purpose {
+    font-size: 12.5px;
+    color: var(--charcoal-mid);
+  }
+  .tool-reason {
+    font-size: 12px;
+    color: var(--charcoal-light);
+    font-style: italic;
+  }
+  .tool-header {
+    grid-template-columns: 110px 1fr 1fr;
+    display: grid;
+    gap: 0;
+    margin-bottom: 6px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--charcoal);
+  }
+  .tool-header span {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--charcoal-light);
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 80px 24px 1fr;
+    gap: 0 16px;
+    align-items: stretch;
+    min-height: 56px;
+  }
+  .tl-phase {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--blue-mid);
+    letter-spacing: 1px;
+    text-align: right;
+    padding-top: 2px;
+  }
+  .tl-line-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .tl-connector {
+    width: 1px;
+    background: var(--beige-mid);
+    flex: 1;
+    margin-top: 4px;
+  }
+  .tl-content {
+    padding-bottom: 18px;
+  }
+  .tl-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 3px;
+  }
+  .tl-desc {
+    font-size: 12px;
+    color: var(--charcoal-light);
+    line-height: 1.5;
+  }
+
+  /* ─── RESULTS GRID ─── */
+  .result-card {
+    background: var(--white);
+    border: 0.5px solid var(--beige-mid);
+    border-radius: 10px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .result-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 300;
+    color: var(--blue-deep);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .result-label {
+    font-size: 12px;
+    color: var(--charcoal-light);
+    line-height: 1.5;
+  }
+
+  /* ─── CONCLUSION ─── */
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .concl-card {
+    background: rgba(168,200,232,0.12);
+    border: 0.5px solid rgba(168,200,232,0.3);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .concl-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--beige);
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .concl-card-text {
+    font-size: 12px;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.6;
+  }
+
+  /* ─── PRINT ─── */
+  @media print {
+    body { background: white; padding: 0; gap: 0; }
+    .slide { margin-bottom: 0; width: 100%; }
+    @page { size: 960px 540px; margin: 0; }
+  }
+
+  /* ─── SLIDE COUNTER BAR ─── */
+  .slide-footer {
+    position: absolute;
+    bottom: 18px;
+    right: 40px;
+    font-size: 10px;
+    color: var(--charcoal-light);
+    letter-spacing: 1px;
+  }
+  .slide-footer-dark {
+    position: absolute;
+    bottom: 18px;
+    right: 40px;
+    font-size: 10px;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 1px;
+  }
+  .slide-footer-left {
+    position: absolute;
+    bottom: 18px;
+    left: 40px;
+    width: 60px;
+    height: 2px;
+    background: var(--beige-mid);
+  }
+  .slide-footer-left-dark {
+    position: absolute;
+    bottom: 18px;
+    left: 40px;
+    width: 60px;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* ─── GAP BOXES ─── */
+  .gap-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 0.5px solid var(--beige-mid);
+  }
+  .gap-item:last-child { border-bottom: none; }
+  .gap-tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue-deep);
+    background: var(--blue-pale);
+    border-radius: 4px;
+    padding: 3px 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+  .gap-text {
+    font-size: 13px;
+    color: var(--charcoal-mid);
+    line-height: 1.6;
+  }
+  .gap-highlight {
+    background: rgba(74,136,190,0.1);
+    border-left: 3px solid var(--blue-deep);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-top: 14px;
+  }
+  .gap-highlight-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  /* ─── METHODOLOGY STEPS ─── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--beige-mid);
+    align-items: center;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--blue-pale);
+    border: 1px solid var(--blue-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--blue-deep);
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 13.5px;
+    color: var(--charcoal-mid);
+    line-height: 1.5;
+  }
+
+  /* ─── LIMITATIONS ─── */
+  .limit-card {
+    background: var(--white);
+    border: 0.5px solid var(--beige-mid);
+    border-radius: 10px;
+    padding: 20px 22px;
+    border-top: 3px solid var(--beige-mid);
+  }
+  .limit-icon {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .limit-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .limit-text {
+    font-size: 12px;
+    color: var(--charcoal-light);
+    line-height: 1.6;
+  }
+
+  /* ─── SRS ─── */
+  .srs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .srs-card {
+    background: var(--white);
+    border: 0.5px solid var(--beige-mid);
+    border-radius: 10px;
+    padding: 22px 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .srs-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--blue-pale);
+    line-height: 1;
+    flex-shrink: 0;
+    -webkit-text-stroke: 1px var(--blue-mid);
+  }
+  .srs-info {}
+  .srs-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .srs-text {
+    font-size: 12px;
+    color: var(--charcoal-light);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — TITLE -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="s1">
+    <div class="s1-left">
+      <div class="s1-tag">CS 4176 · Senior Project · Spring 2026</div>
+      <div>
+        <div class="s1-title">AI-Powered<br><span>Conversational</span><br>Assessment Platform</div>
+        <div style="font-size:13px;color:var(--charcoal-light);margin-top:8px;">for Fair Rubric-Based Grading</div>
+      </div>
+      <div class="s1-info">
+        <strong style="display:block;color:var(--charcoal);font-weight:500;margin-bottom:4px;">Presented by</strong>
+        Jumanah Al-Nahdi &nbsp;·&nbsp; Aseel Bajaber<br>
+        Instructor: Dr. Mohammad Nauman
+      </div>
+    </div>
+    <div class="s1-right">
+      <div class="s1-circle">
+        <div class="s1-circle-inner">AI</div>
+      </div>
+      <div class="s1-names">
+        <strong>Jumanah Al-Nahdi</strong>
+        <strong>Aseel Bajaber</strong>
+        Spring 2026
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — PROBLEM -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-beige" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">01</span>
+      <h2 class="slide-title">Problem Definition</h2>
+    </div>
+    <div class="slide-body">
+      <div class="grid-2" style="height:100%;">
+        <div class="card" style="border-left:3px solid var(--blue-mid);">
+          <div class="card-label">Challenge 01</div>
+          <div class="card-title">Rigid Assessment Formats</div>
+          <div class="card-text">Traditional exams may not reflect students' true understanding. Rigid question formats and partial coverage can penalise students who genuinely comprehend the material.</div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--beige-mid);">
+          <div class="card-label">Challenge 02</div>
+          <div class="card-title">Manual Grading Burden</div>
+          <div class="card-text">Manual grading is time-consuming and burdensome for instructors, especially in large classes where consistent, fair evaluation is difficult to maintain at scale.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">02 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — PROPOSED SOLUTION -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-white" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">02</span>
+      <h2 class="slide-title">Proposed Solution</h2>
+    </div>
+    <div class="slide-body">
+      <div class="arch-grid">
+        <div class="arch-card">
+          <div class="arch-name">Conversational Platform</div>
+          <div class="arch-desc">Students interact through natural, dynamic dialogue rather than static question formats.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-name">Rubric-Based Evaluation</div>
+          <div class="arch-desc">System evaluates understanding using instructor-defined rubrics — not keyword matching.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-name">Automated Feedback</div>
+          <div class="arch-desc">Generates detailed, criterion-level feedback and reports automatically after each assessment.</div>
+        </div>
+      </div>
+      <div style="margin-top:24px;padding:18px 22px;background:var(--blue-pale);border-radius:10px;border-left:3px solid var(--blue-mid);">
+        <div style="font-size:12px;font-weight:500;color:var(--blue-deep);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;">Core Vision</div>
+        <div style="font-size:14px;color:var(--charcoal-mid);line-height:1.6;">Not just a chatbot — an interactive assessment engine that evaluates understanding through follow-up dialogue, producing clear reports for instructors.</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">03 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — LITERATURE REVIEW GAP -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-beige" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">03</span>
+      <h2 class="slide-title">Literature Review Gap</h2>
+    </div>
+    <div class="slide-body">
+      <div style="display:flex;flex-direction:column;">
+        <div class="gap-item">
+          <span class="gap-tag">CBA Papers</span>
+          <span class="gap-text">Dialogue assessment exists, but lacks a full scoring workflow for instructors.</span>
+        </div>
+        <div class="gap-item">
+          <span class="gap-tag">Dialogue Tutoring</span>
+          <span class="gap-text">Follow-up questions aid learning but do not provide complete assessment functionality.</span>
+        </div>
+        <div class="gap-item">
+          <span class="gap-tag">Knowledge Tracing</span>
+          <span class="gap-text">Shows learning levels effectively, but is not a full examination system.</span>
+        </div>
+        <div class="gap-item">
+          <span class="gap-tag">Rubric Grading</span>
+          <span class="gap-text">Scoring is clearer with rubrics, but usually implemented separately from dialogue assessment.</span>
+        </div>
+        <div class="gap-highlight">
+          <div class="gap-highlight-text">Gap identified — No single system combines interactive dialogue, rubric-based scoring, and instructor-ready reports. This project fills that gap.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">04 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — METHODOLOGY -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-white" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">04</span>
+      <h2 class="slide-title">Methodology</h2>
+    </div>
+    <div class="slide-body">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong style="color:var(--charcoal);">Instructor Setup</strong> — Defines assessment topics, rubric criteria, and scoring weights before the session begins.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong style="color:var(--charcoal);">Student Dialogue</strong> — Student answers questions through a natural chat interface at their own pace.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong style="color:var(--charcoal);">AI Interpretation</strong> — System interprets responses and generates targeted follow-up questions when answers are incomplete.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong style="color:var(--charcoal);">Understanding-Based Scoring</strong> — Scores reflect comprehension, not exact phrasing or keyword matching.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text"><strong style="color:var(--charcoal);">Final Report</strong> — After all topics, system generates a comprehensive report summarising the student's performance.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">05 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 6 — SYSTEM ARCHITECTURE -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-beige" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">05</span>
+      <h2 class="slide-title">System Architecture</h2>
+    </div>
+    <div class="slide-body">
+      <div class="arch-grid">
+        <div class="arch-card">
+          <div class="arch-name">Frontend</div>
+          <div class="arch-desc">User interface for both students and instructors — chat view and dashboard.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-name">Backend</div>
+          <div class="arch-desc">Handles all system logic, routing, and processing between components.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-name">LLM API</div>
+          <div class="arch-desc">Generates and analyses conversational responses for the assessment engine.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-name">Database</div>
+          <div class="arch-desc">Stores conversations, scores, feedback, and session transcripts.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-name">Rubric Engine</div>
+          <div class="arch-desc">Applies instructor-defined grading criteria to produce fair, consistent scores.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-name">Instructor Dashboard</div>
+          <div class="arch-desc">Displays results, reports, and analytics for each student session.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">06 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 7 — EXPECTED RESULTS -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-white" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">06</span>
+      <h2 class="slide-title">Expected Results</h2>
+    </div>
+    <div class="slide-body">
+      <div class="grid-2" style="gap:14px;">
+        <div class="result-card">
+          <div class="result-num">↑</div>
+          <div style="font-size:13px;font-weight:500;color:var(--charcoal);margin-bottom:4px;">Fairer Assessment</div>
+          <div class="result-label">Evaluation based on demonstrated understanding, not rigid format compliance.</div>
+        </div>
+        <div class="result-card">
+          <div class="result-num">↓</div>
+          <div style="font-size:13px;font-weight:500;color:var(--charcoal);margin-bottom:4px;">Grading Time</div>
+          <div class="result-label">Significantly reduces time instructors spend on manual grading tasks.</div>
+        </div>
+        <div class="result-card">
+          <div class="result-num">+</div>
+          <div style="font-size:13px;font-weight:500;color:var(--charcoal);margin-bottom:4px;">Student Engagement</div>
+          <div class="result-label">Dialogue-based format encourages more active and reflective participation.</div>
+        </div>
+        <div class="result-card">
+          <div class="result-num">✓</div>
+          <div style="font-size:13px;font-weight:500;color:var(--charcoal);margin-bottom:4px;">Detailed Reports</div>
+          <div class="result-label">Criterion-level feedback and instructor-friendly summaries after each session.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">07 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 8 — LIMITATIONS -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-beige" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">07</span>
+      <h2 class="slide-title">Limitations</h2>
+    </div>
+    <div class="slide-body">
+      <div class="grid-2" style="gap:14px;">
+        <div class="limit-card">
+          <div class="limit-title">LLM Interpretation Errors</div>
+          <div class="limit-text">Language models can misinterpret nuanced or ambiguous student responses, requiring oversight.</div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-title">Rubric Quality Dependency</div>
+          <div class="limit-text">System performance depends heavily on how well the instructor defines the rubric criteria.</div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-title">Limited Testing Scope</div>
+          <div class="limit-text">Current phase uses theoretical data only — real-world testing across subjects is not yet conducted.</div>
+        </div>
+        <div class="limit-card">
+          <div class="limit-title">Human Review Required</div>
+          <div class="limit-text">Edge cases and high-stakes assessments will still require instructor verification and review.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">08 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 9 — TIMELINE -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-white" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">08</span>
+      <h2 class="slide-title">Project Timeline</h2>
+    </div>
+    <div class="slide-body">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-phase">M1 – M2</div>
+          <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+          <div class="tl-content"><div class="tl-title">Planning & Research</div><div class="tl-desc">Problem scoping, literature review, and initial requirements gathering.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">M3 – M4</div>
+          <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+          <div class="tl-content"><div class="tl-title">Requirements & SRS Documentation</div><div class="tl-desc">Functional/non-functional requirements, use cases, and activity diagrams.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">M5 – M6</div>
+          <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+          <div class="tl-content"><div class="tl-title">Prototype Design & Development</div><div class="tl-desc">UI/UX design in Figma, Streamlit prototype with chat interface and dashboard.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">M7</div>
+          <div class="tl-line-wrap"><div class="tl-dot"></div><div class="tl-connector"></div></div>
+          <div class="tl-content"><div class="tl-title">Testing & Validation</div><div class="tl-desc">System workflow testing using theoretical dataset.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">M8</div>
+          <div class="tl-line-wrap"><div class="tl-dot" style="background:var(--charcoal-light);"></div></div>
+          <div class="tl-content" style="padding-bottom:0;"><div class="tl-title">Final Documentation & Presentation</div><div class="tl-desc">Complete documentation, report writing, and final project presentation.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">09 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 10 — SRS (DIVIDER) -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="divider-slide">
+    <div class="divider-inner">
+      <div class="divider-sup">Post-Midterm Progress</div>
+      <div class="divider-title">New<br>Additions &<br><em>Deliverables</em></div>
+    </div>
+  </div>
+  <div class="slide-footer-left-dark"></div>
+  <div class="slide-footer-dark">10 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 11 — SRS CONTENT -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-beige" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">09</span>
+      <h2 class="slide-title">Software Requirements Specification</h2>
+    </div>
+    <div class="slide-body">
+      <div class="srs-grid">
+        <div class="srs-card">
+          <div class="srs-num">01</div>
+          <div class="srs-info">
+            <div class="srs-title">SRS Document Completed</div>
+            <div class="srs-text">Full specification document formalising system requirements, user roles, and expected functionality.</div>
+          </div>
+        </div>
+        <div class="srs-card">
+          <div class="srs-num">02</div>
+          <div class="srs-info">
+            <div class="srs-title">Functional & Non-Functional Requirements</div>
+            <div class="srs-text">Clearly defined what the system must do and the quality standards it must meet.</div>
+          </div>
+        </div>
+        <div class="srs-card">
+          <div class="srs-num">03</div>
+          <div class="srs-info">
+            <div class="srs-title">Use Cases & Activity Diagrams</div>
+            <div class="srs-text">Interaction flows and system behaviour documented in structured UML diagrams.</div>
+          </div>
+        </div>
+        <div class="srs-card">
+          <div class="srs-num">04</div>
+          <div class="srs-info">
+            <div class="srs-title">Foundation for Implementation</div>
+            <div class="srs-text">Structured clear baseline for all subsequent design and development phases.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">11 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 12 — DATA REQUIREMENTS -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-white" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">10</span>
+      <h2 class="slide-title">Data Requirements & Planning</h2>
+    </div>
+    <div class="slide-body">
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--blue-mid);margin-bottom:10px;">Data Types Defined</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="background:var(--blue-pale);color:var(--blue-deep);font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--blue-mid);">Assessment Topics</span>
+          <span style="background:var(--blue-pale);color:var(--blue-deep);font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--blue-mid);">Questions</span>
+          <span style="background:var(--blue-pale);color:var(--blue-deep);font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--blue-mid);">Rubric Criteria</span>
+          <span style="background:var(--blue-pale);color:var(--blue-deep);font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--blue-mid);">Sample Responses</span>
+          <span style="background:var(--blue-pale);color:var(--blue-deep);font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--blue-mid);">Follow-ups</span>
+          <span style="background:var(--blue-pale);color:var(--blue-deep);font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--blue-mid);">Scores</span>
+          <span style="background:var(--blue-pale);color:var(--blue-deep);font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--blue-mid);">Session Transcripts</span>
+        </div>
+      </div>
+      <div class="grid-2" style="gap:14px;">
+        <div class="card">
+          <div class="card-label">Dataset Approach</div>
+          <div class="card-text">Representative theoretical dataset planned for testing and prototyping. No real student data is used in this phase.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Preprocessing</div>
+          <div class="card-text">Data structure and preprocessing pipeline defined and aligned with implementation and rubric engine requirements.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">12 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 13 — TOOL SELECTION -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide bg-beige" style="min-height:540px;position:relative;">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <span class="slide-num">11</span>
+      <h2 class="slide-title">Tool Selection & Justification</h2>
+    </div>
+    <div class="slide-body">
+      <div class="tool-header">
+        <span>Tool</span>
+        <span>Purpose</span>
+        <span>Justification</span>
+      </div>
+      <div class="tool-row">
+        <div class="tool-name">Figma</div>
+        <div class="tool-purpose">UI/UX design & prototyping</div>
+        <div class="tool-reason">Clear design workflow, fast prototyping iterations</div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-name">PlantUML</div>
+        <div class="tool-purpose">UML & architecture diagrams</div>
+        <div class="tool-reason">Structured, professional academic-standard diagrams</div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-name">Streamlit</div>
+        <div class="tool-purpose">Interactive web prototype</div>
+        <div class="tool-reason">Simple, fast — chat interface and dashboard ready</div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-name">Firebase</div>
+        <div class="tool-purpose">Authentication & database</div>
+        <div class="tool-reason">Easy backend setup, real-time data storage</div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-name">OpenAI API</div>
+        <div class="tool-purpose">AI conversation & follow-ups</div>
+        <div class="tool-reason">Core engine powering assessment logic and dialogue</div>
+      </div>
+      <div class="tool-row">
+        <div class="tool-name">Canva</div>
+        <div class="tool-purpose">Presentation & poster</div>
+        <div class="tool-reason">Professional academic-quality visual presentation</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left"></div>
+  <div class="slide-footer">13 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 14 — CONCLUSION (DARK) -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="slide" style="min-height:540px;position:relative;">
+  <div style="background:var(--charcoal);min-height:540px;padding:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:540px;">
+      <div style="padding:50px;border-right:0.5px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div style="font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--blue-light);margin-bottom:16px;">Senior Project · Spring 2026</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--beige);line-height:1.15;">Conclusion</div>
+        </div>
+        <div style="font-size:13px;color:rgba(245,240,232,0.55);line-height:1.9;border-top:0.5px solid rgba(255,255,255,0.1);padding-top:20px;">
+          Project aims to improve <span style="color:var(--beige);">fairness</span>, <span style="color:var(--beige);">efficiency</span>, and <span style="color:var(--beige);">transparency</span> in student assessment through AI-powered conversational evaluation.
+        </div>
+      </div>
+      <div style="padding:50px;display:flex;flex-direction:column;gap:14px;justify-content:center;">
+        <div class="concl-card">
+          <div class="concl-card-title">Theoretical Foundation Complete</div>
+          <div class="concl-card-text">SRS, data planning, tool selection, and prototype planning are all documented and ready.</div>
+        </div>
+        <div class="concl-card">
+          <div class="concl-card-title">Senior-2 Next Steps</div>
+          <div class="concl-card-text">Implement the Streamlit prototype with chat interface, rubric engine, and instructor dashboard.</div>
+        </div>
+        <div class="concl-card">
+          <div class="concl-card-title">Full Project Arc</div>
+          <div class="concl-card-text">From concept and literature review → SRS → data planning → tool selection → prototype.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer-left-dark"></div>
+  <div class="slide-footer-dark">14 / 14</div>
+</div>
+
+</body>
+</html>
